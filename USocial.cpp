@@ -45,6 +45,8 @@ void USocial::removeUser(User* user)
 			}
 		}
 	}
+	_users.erase(user->getId());
+	_counterId--;
 }
 
 User* USocial::getUserById(unsigned long lookUpId)

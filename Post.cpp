@@ -38,16 +38,15 @@ Media* Post::getMedia()
 
 std::ostream& operator<<(std::ostream& os, Post&  post)
 {
-	os << "Media: " << endl;
+	os << post.getText();
+	os << "Media: ";
 	Media* m = post.getMedia();
-	if (m != NULL){
+	if (m != NULL) {
 		m->display();
 	}
 	else {
-		os << "No Media" << endl;
+		os << "No Media";
 	}
-	os << "Text: " << endl;
-	os << post.getText() << endl;
 	return os;
 }
 

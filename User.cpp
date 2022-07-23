@@ -37,11 +37,17 @@ string User::getName()
 
 void User::addFriend(User* newFriend)
 {
+	if (this == newFriend) {
+		throw std::invalid_argument("you cant add yourself as a friend");
+	}
 	_friends.push_back(newFriend->getId());
 }
 
 void User::removeFriend(User* remFriend)
 {
+	if (this == remFriend) {
+		throw std::invalid_argument("you cant add yourself as a friend");
+	}
 	_friends.remove(remFriend->getId());
 }
 
@@ -70,31 +76,37 @@ void User::receiveMessage(Message* message)
 
 void User::sendMessage(User* user, Message* message)
 {
+	if (_us->getUserById(user->getId()) == NULL) {
+		throw std::invalid_argument("Your friend was removed from UC- cant send a Message");
+	}
 	if (isFriend(user)) {
-		cout << "Sending message to " << user->getName() << " " << endl;
 		user->receiveMessage(message);
 	}
-	cout << "Sorry *" << _name <<"* you arent friend with " << user->getName() << " " << endl;
+	else {
+		throw std::invalid_argument("You can only send a Message to a friend");
+	}
 
 }
 
 void User::viewReceivedMessages()
 {
-	std::cout << _name << "'s Messages: " << std::endl;
+	std::cout << _name << " is reading received messages: " << std::endl;
 	for (auto message: _receivedMsgs) {
 		cout << message->getText() << endl;
 	}
+	std::cout << "_____end of inbox______" << std::endl;
 }
 
 void User::viewFriendsPosts()
 {
+	std::cout << _name << " is reading friends posts:" << std::endl;
 	for (auto friendUser : _friends) {
 		User* f = _us->getUserById(friendUser);
-		std::cout << *f;
 		for (auto post : f->getPosts()) {
 			std::cout << *post << std::endl;
 		}
 	}
+	std::cout << "_____end of friends posts______" << std::endl;
 }
 
 bool User::isFriend(User* userFriend) {
