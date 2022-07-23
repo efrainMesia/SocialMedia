@@ -5,5 +5,5 @@ using namespace std;
 
 class Video : public Media {
 public:
-	void media();
+	void display();
 };

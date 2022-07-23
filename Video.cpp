@@ -1,6 +1,6 @@
 #include "Video.h"
 
-void Video::media()
+void Video::display()
 {
 	cout << "Video" << endl;
 }

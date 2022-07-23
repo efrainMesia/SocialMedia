@@ -18,4 +18,6 @@ public:
 	void post(string, Media*);
 	string getText();
 	Media* getMedia();
+	friend std::ostream& operator<<(std::ostream& os, Post&);
+	~Post();
 };

@@ -1,18 +1,16 @@
 #pragma once
-#include <iostream>
 #include <map>
-#include "User.h"
-using namespace std;
+#include <iostream>
+class User;
 
-class USocial {
-
+class USocial{
 private:
-	map <unsigned long, User*> _users;
-	unsigned long _id;
+	std::map <unsigned long, User* > _users;
 
 public:
+	unsigned long _counterId;
 	USocial();
-	User* registerUser(string, bool);
+	User* registerUser(std::string username , bool businessUser = false);
 	void removeUser(User*);
 	User* getUserById(unsigned long);
 };

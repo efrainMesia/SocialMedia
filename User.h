@@ -1,23 +1,22 @@
 #pragma once
-#include "Post.h"
-#include "Message.h"
 #include <iostream>
 #include <list>
 #include <iterator>
-#include "USocial.h"
-using namespace std;
-
+#include "Post.h"
+#include "Message.h"
 
 class User {
+	friend class USocial;
 protected:
-	USocial* us;
-	unsigned long id;
-	string name;
-	list<unsigned long> friends;
-	list<Post*> posts;
-	list<Message*> receivedMsgs;
+	USocial* _us;
+	unsigned long _id;
+	string _name;
+	list<unsigned long> _friends;
+	list<Post*> _posts;
+	list<Message*> _receivedMsgs;
 
 	User();
+	User(User*);
 	~User();
 
 public:
@@ -29,7 +28,9 @@ public:
 	void post(string, Media*);
 	list<Post*> getPosts();
 	void receiveMessage(Message*);
-	void sendMessage(User*, Message*);
+	virtual void sendMessage(User*, Message*);
 	void viewReceivedMessages();
-
+	void viewFriendsPosts();
+	bool isFriend(User*);
+	friend std::ostream& operator<<(std::ostream& os, User& user);
 };

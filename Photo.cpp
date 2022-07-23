@@ -1,7 +1,6 @@
 #include "Photo.h"
 
-
-void Photo::media() {
+void Photo::display() {
 	cout << "Photo" << endl;
 }
 

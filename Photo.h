@@ -5,5 +5,5 @@
 using namespace std;
 class Photo :public Media {
 public:
-	void media();
+	void display();
 };

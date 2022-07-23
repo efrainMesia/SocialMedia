@@ -1,5 +1,5 @@
 #include "Audio.h"
 
-void media() {
+void Audio::display() {
 	cout << "Audio" << endl;
 }
