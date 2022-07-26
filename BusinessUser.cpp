@@ -12,6 +12,9 @@ BusinessUser::BusinessUser(User* originUser) :User(originUser)
 
 void BusinessUser::sendMessage (User* user, Message* message)
 {
+	if (user == NULL) {
+		throw std::invalid_argument("Your were trying to add someone that was remove or doesnt exist");
+	}
 	if (_us->getUserById(user->getId()) == NULL) {
 		throw std::invalid_argument("Your friend was removed from UC- cant send a Message");
 	}

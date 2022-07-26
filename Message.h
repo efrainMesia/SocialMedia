@@ -9,4 +9,6 @@ private:
 public:
 	Message(string);
 	string getText();
+	bool isEmptyMessage(std::string);
+	~Message();
 };

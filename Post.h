@@ -12,12 +12,12 @@ private:
 	Media* _media;
 
 public:
-	Post(string);
-	Post(string,Media*);
+	Post();
 	void post(string);
 	void post(string, Media*);
 	string getText();
 	Media* getMedia();
+	bool isEmptyText(string);
 	friend std::ostream& operator<<(std::ostream& os, Post&);
 	~Post();
 };

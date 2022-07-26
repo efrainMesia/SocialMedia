@@ -2,5 +2,9 @@
 
 void Video::display()
 {
-	cout << "Video" << endl;
+	cout << "Video";
+}
+
+Video::~Video()
+{
 }

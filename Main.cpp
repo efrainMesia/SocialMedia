@@ -1,21 +1,214 @@
-#include <iterator>
-#include <list>
-#include <map>
-#include <iterator>
-#include <algorithm>
 #include "USocial.h"
 #include "User.h"
-#include "Media.h"
 #include <exception>
 #include <iostream>
 
 
-
-
 int main()
 {
-	std::cout << "MAIN: ";
+	
+	USocial us2;
+	User* x1 = us2.registerUser("Zi", true);
+	User* x2 = us2.registerUser("gadi");
+	User* x3 = us2.registerUser("yuval");
+
+
+
+	/// empty name / onr char name not allowed 
+	try
+	{
+		User* x44 = us2.registerUser("");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+
+	try
+	{
+	User* x55 = us2.registerUser("                  ");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+
+	try
+	{
+	User* x66 = us2.registerUser("      b           ");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+
+	try
+	{
+	User* x77 = us2.registerUser(" ");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+
+
+
+
+	/// empty post and message///////////////////////////////////////////////
+	try
+	{
+		x1->sendMessage(x2, new Message("        "));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x1->sendMessage(x2, new Message(" "));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x1->sendMessage(x2, new Message("   A    "));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x1->sendMessage(x2, new Message(""));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+
+
+	x2->viewReceivedMessages();//only A
+	
+	
+	// i allow empty post if there is a media .
+	x2->post("        ", new Audio());
+	x2->post(" ", new Audio());
+	x2->post("    B ", new Audio());
+	x2->post("", new Audio());
+	x2->post("hi world", new Audio());
+	
+	try
+	{
+		x2->post("        ");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x2->post(" ");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x2->post("    B ");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x2->post("");
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	
+	x1->addFriend(x2);
+	x1->viewFriendsPosts(); //only B 
+
+
+	///////////////////////end empty post and message ///////////////////////////////
+
+
+	
+	
+	/// sending NULL as media /Message/user
+
+	try
+	{
+		x2->post("FGGFGFGFFGGFGFGF", NULL);
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+	try
+	{
+		x2->addFriend(NULL);
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x2->removeFriend(NULL);
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+	try
+	{
+		x1->sendMessage(x2, NULL);
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+	try
+	{
+		x2->sendMessage(NULL, new Message("I ate pizza "));
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "error: " << e.what() << std::endl;
+	}
+
+
+	//////////////////////////////////////////////////////////
+
+	
+	
+	std::cout << "zzzzzzzzzzzzzzzzzzzzzzzzzzz" << std::endl;
 	USocial us;
+	User* z1 = us.registerUser("Zi", true);
+	User* z2 = us.registerUser("Zana");
+
+	z1->addFriend(z2);
+	z2->post("y1: I hate C++!");
+	std::cout << "zzzzzzzzzzzzzzzzzzzzzzzzzzz" << std::endl;
+	us.removeUser(z2);
+	z1->viewFriendsPosts();
+
+	std::cout << "zzzzzzzzzzzzzzzzzzzzzzzzzzz" << std::endl;
+
 	User* y1 = us.registerUser("Li", true);
 	User* y2 = us.registerUser("Yana", true);
 	User* y3 = us.registerUser("Shay");
@@ -24,11 +217,9 @@ int main()
 	y1->post("y1: I hate C++!");
 	y2->post("y2 post: I LOVE JAVA  :)", new Audio());
 	y3->post("y3: This is shit!", new Photo());
-	std::cout << "MAIN: ELITA IS ADDING FRIENDS ~ LI , YANA " << std::endl;
 	y5->addFriend(y1);
 	y5->addFriend(y2);
 	y5->viewFriendsPosts(); // should see only y1, y2 s' posts
-	std::cout << "MAIN: hen IS SENDING MESSAGE TO Elita " << std::endl << std::endl;
 	y4->sendMessage(y5, new Message("Buy shawarma!"));
 	y5->viewReceivedMessages();
 	try
@@ -37,10 +228,9 @@ int main()
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << "error: " << e.what() << std::endl<< std::endl;
+		std::cout << "error: " << e.what() << std::endl;
 	}
 	y5->viewReceivedMessages();
-	std::cout << "MAIN: Shay IS ADDING FRIENDS ~ Elita" << std::endl << std::endl;
 	y3->addFriend(y5);
 	y3->sendMessage(y5, new Message("I ate pizza "));
 	y5->viewReceivedMessages();
@@ -75,21 +265,19 @@ int main()
 
 	std::cout << "guy" << std::endl;
 
-	std::cout << "MAIN: hen IS ADDING FRIENDS ~ Elita" << std::endl << std::endl;
+
 	y4->addFriend(y5);
-	std::cout << "MAIN: removing Elita from USocial" << std::endl << std::endl;
 	us.removeUser(y5);
 	///  y5 rremoved you cant send email 
 	try
 	{
-		std::cout << "MAIN: HEN is sending message to ELITA" << std::endl << std::endl;
 		y4->sendMessage(y5, new Message("I ate pizza "));
 	}
 	catch (const std::exception& e)
 	{
 		std::cout << "error: " << e.what() << std::endl;
 	}
-	y5->viewReceivedMessages();
+
 
 	User* y6 = us.registerUser("shir", true);
 	User* y7 = us.registerUser("dana");
@@ -248,57 +436,57 @@ int main()
 	{
 		std::cout << "error: " << e.what() << std::endl;
 	}
-	try
-	{
-		u5->viewReceivedMessages();
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
+	//try
+	//{
+	//	u5->viewReceivedMessages();
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 	u4->viewReceivedMessages();
-	try
-	{
-		u3->sendMessage(u5, new Message("All your base are belong to us"));
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
+	//try
+	//{
+	//	u3->sendMessage(u5, new Message("All your base are belong to us"));
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 
 	std::cout << "@--@" << std::endl;
-	try
-	{
-		u5->viewReceivedMessages();
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-	try
-	{
-		u3->addFriend(u5);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-	try
-	{
-		u3->sendMessage(u5, new Message("All your base are belong to us"));
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-	try
-	{
-		u5->viewReceivedMessages();
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
+	//try
+	//{
+	//	u5->viewReceivedMessages();
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//try
+	//{
+	//	u3->addFriend(u5);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//try
+	//{
+	//	u3->sendMessage(u5, new Message("All your base are belong to us"));
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//try
+	//{
+	//	u5->viewReceivedMessages();
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 
 	try
 	{
@@ -317,7 +505,9 @@ int main()
 	{
 		std::cout << "error: " << e.what() << std::endl;
 	}
-
+	
+	
+	std::cout << "u1 posts****** " << std::endl;
 	u1->post("u1 Hello world!");
 	u1->post("u1 Hello world! 2222222222222222222", new Audio());
 	u2->post(" u2 I'm having a great time here :)", new Audio());
@@ -325,9 +515,8 @@ int main()
 	u3->post("u3 This is awesome! 333333333333333333", new Photo());
 	u4->post("u4 This is awesome!", new Photo());
 	u4->post("u4 This is awesome! 333333333333333333", new Photo());
-	u5->post("u5 This is awesome!", new Photo());
-	u5->post("u5 This is awesome! 333333333333333333", new Photo());
 
+	
 	std::list<Post*> guy_u1 = u1->getPosts();
 	std::list<Post*> guy_u3 = u3->getPosts();
 
@@ -339,83 +528,86 @@ int main()
 
 	for (auto const& i : guy_u3) {
 		std::cout << "u3 posts " << i->getText() << std::endl;
-		if ((i->getMedia()) != NULL)
+		if ((i->getMedia()) != NULL) {
 			(i->getMedia())->display();
+			std::cout << "" << std::endl;
+		}
 	}
 
-	try
-	{
-		u5->addFriend(u1);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-	try
-	{
-		u5->addFriend(u2);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-	try
-	{
-		u5->addFriend(u1);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-	try
-	{
-		u5->addFriend(u2);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-
-	try
-	{
-		u5->addFriend(u1);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-	try
-	{
-		u5->addFriend(u3);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-	try
-	{
-		u5->addFriend(u5);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-
+	//try
+	//{
+	//	u5->addFriend(u1);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//
+	//try
+	//{
+	//	u5->addFriend(u2);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//
+	//try
+	//{
+	//	u5->addFriend(u1);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//
+	//try
+	//{
+	//	u5->addFriend(u2);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//
+	//
+	//try
+	//{
+	//	u5->addFriend(u1);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//
+	//try
+	//{
+	//	u5->addFriend(u3);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//
+	//try
+	//{
+	//	u5->addFriend(u5);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 
 
 
-	User* u5_copy = us.getUserById(5);
-	std::cout << "check getUserById" << std::endl;
-	std::cout << u5_copy->getName() << " " << u5_copy->getId() << std::endl;
 
-	std::cout << "friends posts:" << std::endl;
+	//std::cout << "::::::::::::::::::::::::::::::" << std::endl;
+	//User* u5_copy = us.getUserById(4);
+	//std::cout << "::::::::::::::::::::::::::::::" << std::endl;
+	//std::cout << "check getUserById" << std::endl;
+	//std::cout << u5_copy->getName() << " " << u5_copy->getId() << std::endl;
+	//
+	//std::cout << "friends posts:" << std::endl;
 	u1->viewFriendsPosts(); // should see only u1, u2 s' posts
 
 
@@ -517,82 +709,82 @@ int main()
 
 
 	std::cout << "**" << std::endl;
-	try
-	{
-		us.removeUser(u5);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-	std::cout << "remove user" << std::endl;
+	//try
+	//{
+	//	us.removeUser(u5);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//std::cout << "remove user" << std::endl;
+	//
+	////u5 is removed how can he post ????
+	//try
+	//{
+	//	us.removeUser(u5);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 
-	//u5 is removed how can he post ????
-	try
-	{
-		us.removeUser(u5);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
+	//try
+	//{
+	//	u5->post("u5 This is awesome! 333333333333333333", new Photo());
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//
+	//}
+	//std::cout << "remove user2222" << std::endl;
+	//try
+	//{
+	//	u5->addFriend(u1);
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 
-	try
-	{
-		u5->post("u5 This is awesome! 333333333333333333", new Photo());
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-
-	}
-	std::cout << "remove user2222" << std::endl;
-	try
-	{
-		u5->addFriend(u1);
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-	try
-	{
-		std::list<Post*> guy_u89 = u5->getPosts();
-		for (auto const& i : guy_u89) {
-			std::cout << "u5 posts " << i->getText() << std::endl;
-			if ((i->getMedia()) != NULL)
-				(i->getMedia())->display();
-		}
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
-
-
+	//try
+	//{
+	//	std::list<Post*> guy_u89 = u5->getPosts();
+	//	for (auto const& i : guy_u89) {
+	//		std::cout << "u5 posts " << i->getText() << std::endl;
+	//		if ((i->getMedia()) != NULL)
+	//			(i->getMedia())->display();
+	//	}
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 
 
-	try
-	{
-		for (unsigned long i = 1; i <= 10; i++) {
-			u3->sendMessage(u5, new Message("spam"));
-		}
-	}
 
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
 
-	try
-	{
-		u5->viewReceivedMessages();
-	}
-	catch (const std::exception& e)
-	{
-		std::cout << "error: " << e.what() << std::endl;
-	}
+	//try
+	//{
+	//	for (unsigned long i = 1; i <= 10; i++) {
+	//		u3->sendMessage(u5, new Message("spam"));
+	//	}
+	//}
+
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
+	//
+	//try
+	//{
+	//	u5->viewReceivedMessages();
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cout << "error: " << e.what() << std::endl;
+	//}
 
 
 	u1->post("u1 This is awesome! 333333333333333333", new Photo());
@@ -645,6 +837,7 @@ int main()
 	u4->viewReceivedMessages();
 
 	std::cout << "end of test" << std::endl;
+
 
 
 	return 0;

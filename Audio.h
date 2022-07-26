@@ -6,4 +6,5 @@ using namespace std;
 class Audio:public Media {
 public:
 	void display();
+	~Audio();
 };

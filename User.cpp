@@ -3,6 +3,7 @@
 #include "USocial.h"
 User::User(){
 }
+
 User::User(User* originUser)
 {
 	_name = originUser->_name;
@@ -23,7 +24,6 @@ User::User(User* originUser)
 		_receivedMsgs.push_back(copyMessages);
 	}
 }
-;
 
 unsigned long User::getId()
 {
@@ -37,30 +37,50 @@ string User::getName()
 
 void User::addFriend(User* newFriend)
 {
-	if (this == newFriend) {
+	if (newFriend == NULL) {
+		throw std::invalid_argument("Your were trying to add someone that was remove or doesnt exist");
+	}
+	else if (this == newFriend) {
 		throw std::invalid_argument("you cant add yourself as a friend");
 	}
-	_friends.push_back(newFriend->getId());
+	else if (isFriend(newFriend)) {
+		throw std::invalid_argument("This friend already in List");
+	}
+	else {
+		_friends.push_back(newFriend->getId());
+	}
 }
 
 void User::removeFriend(User* remFriend)
 {
-	if (this == remFriend) {
-		throw std::invalid_argument("you cant add yourself as a friend");
+	if (remFriend == NULL) {
+		throw std::invalid_argument("Cant remove because user removed from US");
 	}
-	_friends.remove(remFriend->getId());
+	if (isFriend(remFriend)){
+		_friends.remove(remFriend->getId());
+	}
+	else {
+		throw std::invalid_argument("Cannot remove because he is not in your friend list");
+	}
 }
 
 void User::post(string text)
 {
-	Post* post = new Post(text);
+	Post* post = new Post();
+	try {
+		post->post(text);
+	}
+	catch (const std::exception& e) {
+		throw;
+	}
 	_posts.push_back(post);
 
 }
 
 void User::post(string text, Media* media)
 {
-	Post* post = new Post(text, media);
+	Post* post = new Post();
+	post->post(text,media);
 	_posts.push_back(post);
 }
 
@@ -76,10 +96,13 @@ void User::receiveMessage(Message* message)
 
 void User::sendMessage(User* user, Message* message)
 {
-	if (_us->getUserById(user->getId()) == NULL) {
-		throw std::invalid_argument("Your friend was removed from UC- cant send a Message");
+	if (user == NULL) {
+		throw std::invalid_argument("Your were trying to add someone that was remove or doesnt exist");
 	}
-	if (isFriend(user)) {
+	if (_us->getUserById(user->getId()) == NULL) {
+		throw std::invalid_argument("Your friend was removed from US - cant send a Message");
+	}
+	else if (isFriend(user)) {
 		user->receiveMessage(message);
 	}
 	else {
@@ -90,23 +113,36 @@ void User::sendMessage(User* user, Message* message)
 
 void User::viewReceivedMessages()
 {
-	std::cout << _name << " is reading received messages: " << std::endl;
-	for (auto message: _receivedMsgs) {
-		cout << message->getText() << endl;
+	if (_receivedMsgs.empty())
+	{
+		std::cout << "Your inbox is empty" << std::endl;
 	}
-	std::cout << "_____end of inbox______" << std::endl;
+	else {
+		std::cout << _name << " is reading received messages: " << std::endl;
+		for (auto message : _receivedMsgs) {
+			cout << message->getText() << endl;
+		}
+		std::cout << "_____end of inbox______" << std::endl;
+	}
 }
 
 void User::viewFriendsPosts()
 {
-	std::cout << _name << " is reading friends posts:" << std::endl;
-	for (auto friendUser : _friends) {
-		User* f = _us->getUserById(friendUser);
-		for (auto post : f->getPosts()) {
-			std::cout << *post << std::endl;
-		}
+	if (_friends.empty()) {
+		std::cout << "Hi " << _name << " ,you havent added any friend yet so no posts to view" << std::endl;
 	}
-	std::cout << "_____end of friends posts______" << std::endl;
+	else {
+		std::cout << _name << " is reading friends posts:" << std::endl;
+		for (auto friendUser : _friends) {
+			User* f = _us->getUserById(friendUser);
+			
+			for (auto post : f->getPosts()) {
+				std::cout << f->getName() << "'s post:";
+				std::cout << *post << std::endl; 
+			}
+		}
+		std::cout << "_____end of friends posts______" << std::endl;
+	}
 }
 
 bool User::isFriend(User* userFriend) {
@@ -129,8 +165,9 @@ User::~User() {
 		delete message;
 	}
 	_receivedMsgs.clear();
-
 	_friends.clear();
+	_id = 0;
+	_name = "";
 }
 
 std::ostream& operator<<(std::ostream& os, User& user)

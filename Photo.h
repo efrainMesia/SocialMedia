@@ -6,4 +6,5 @@ using namespace std;
 class Photo :public Media {
 public:
 	void display();
+	~Photo();
 };

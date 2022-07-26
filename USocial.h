@@ -12,5 +12,8 @@ public:
 	USocial();
 	User* registerUser(std::string username , bool businessUser = false);
 	void removeUser(User*);
+	bool isEmptyUserName(std::string);
+
 	User* getUserById(unsigned long);
+	~USocial();
 };

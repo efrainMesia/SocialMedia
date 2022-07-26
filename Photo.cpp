@@ -1,6 +1,10 @@
 #include "Photo.h"
 
 void Photo::display() {
-	cout << "Photo" << endl;
+	cout << "Photo";
+}
+
+Photo::~Photo()
+{
 }
 

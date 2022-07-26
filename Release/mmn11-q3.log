@@ -1,0 +1,14 @@
+﻿  Audio.cpp
+  BusinessUser.cpp
+  Main.cpp
+  Message.cpp
+  Photo.cpp
+  Post.cpp
+  User.cpp
+  USocial.cpp
+  Video.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 480 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  mmn11-q3.vcxproj -> C:\Users\Phantom\source\repos\mmn11-q3\Release\mmn11-q3.exe

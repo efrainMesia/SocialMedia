@@ -9,5 +9,5 @@ class BusinessUser :public User
 public:
 	BusinessUser();
 	BusinessUser(User*);
-	void sendMessage (User*, Message*) override ;
+	void sendMessage (User*, Message*) override;
 };
