@@ -6,6 +6,7 @@
 #include "Message.h"
 
 class User {
+	//allowing to Usocial to get access to private/protected functions/attribs.
 	friend class USocial;
 protected:
 	USocial* _us;
@@ -14,9 +15,10 @@ protected:
 	list<unsigned long> _friends;
 	list<Post*> _posts;
 	list<Message*> _receivedMsgs;
-
+	//constructor
 	User();
 	User(User*);
+	//deep dtor
 	~User();
 
 public:

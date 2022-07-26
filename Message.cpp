@@ -14,6 +14,9 @@ string Message::getText()
 	return _text;
 }
 
+/*
+	checks if the text message which is wanted to send is empty
+*/
 bool Message::isEmptyMessage(std::string text)
 {
 	if (text.find_first_not_of(' ') != std::string::npos) {

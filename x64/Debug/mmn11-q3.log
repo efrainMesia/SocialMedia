@@ -1,2 +1,11 @@
-﻿  Main.cpp
+﻿  Audio.cpp
+  BusinessUser.cpp
+  Main.cpp
+  Message.cpp
+  Photo.cpp
+  Post.cpp
+  USocial.cpp
+  User.cpp
+  Video.cpp
+  Generating Code...
   mmn11-q3.vcxproj -> C:\Users\Phantom\source\repos\mmn11-q3\x64\Debug\mmn11-q3.exe

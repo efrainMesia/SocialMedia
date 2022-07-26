@@ -8,7 +8,8 @@ USocial::USocial()
 	_counterId = 1;
 }
 
-/*	Registers user, the businessUser parameter is default as false
+/*	
+	Registers user, the businessUser parameter is default as false
 	Creates a pointer of User and according to parameter businessUser
 	it creates a businessUser or normal User.
 	Since USocial is friend of class User, then Usocial is allowed to change/use private/protected functions/attributes
@@ -57,6 +58,10 @@ void USocial::removeUser(User* user)
 	delete user;
 }
 
+/*	
+	Looks for the ID in the map, incase it doesnt exist that means we got to the end of the map,
+	So returns NULL since its not found
+*/
 User* USocial::getUserById(unsigned long lookUpId)
 {
 	auto it = _users.find(lookUpId);
@@ -75,7 +80,7 @@ USocial::~USocial()
 	}
 }
 
-
+/*	Check if the name that its empty or just spaces */
 bool USocial::isEmptyUserName(std::string name) {
 	if (name.find_first_not_of(' ') != std::string::npos) {
 		return false;

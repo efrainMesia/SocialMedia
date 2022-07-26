@@ -7,8 +7,10 @@ private:
 	string _text;
 
 public:
-	Message(string);
 	string getText();
 	bool isEmptyMessage(std::string);
+	//constructor
+	Message(string);
+	//dtor
 	~Message();
 };

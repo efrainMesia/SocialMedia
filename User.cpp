@@ -1,9 +1,19 @@
 #pragma once
 #include "User.h"
 #include "USocial.h"
+
+/*
+	Empty Constructor
+*/
 User::User(){
+	_name = "";
+	_id = 0;
+	_us = nullptr;
 }
 
+/*
+	Copy constructor
+*/
 User::User(User* originUser)
 {
 	_name = originUser->_name;
@@ -35,6 +45,10 @@ string User::getName()
 	return _name;
 }
 
+/*
+	Do some check before, if the friend whos wanted to be added its empty, or we want to add ourself or
+	if we want to add someone that is already our friend.
+*/
 void User::addFriend(User* newFriend)
 {
 	if (newFriend == NULL) {
@@ -51,6 +65,10 @@ void User::addFriend(User* newFriend)
 	}
 }
 
+
+/*
+* Checks if the user we want its null(exist or not) also checks the user we want to remove is our friend.
+*/
 void User::removeFriend(User* remFriend)
 {
 	if (remFriend == NULL) {
@@ -64,23 +82,38 @@ void User::removeFriend(User* remFriend)
 	}
 }
 
+/*
+* create new empty post, and then use the function post from Class Post.
+* In Post, the function post can throw an exception if the post text is empty. part of the function is wrapped in try/catch
+* and the exception is throwed to the main
+*/
 void User::post(string text)
 {
 	Post* post = new Post();
 	try {
 		post->post(text);
 	}
-	catch (const std::exception& e) {
+	catch (const std::exception&) {
 		throw;
 	}
 	_posts.push_back(post);
 
 }
 
+/*
+* create new empty post, and then use the function post from Class Post.
+* In Post, the function post can throw an exception if the post Media is NULL. part of the function is wrapped in try/catch
+* and the exception is throwed to the main
+*/
 void User::post(string text, Media* media)
 {
 	Post* post = new Post();
-	post->post(text,media);
+	try {
+		post->post(text, media);
+	}
+	catch (const std::exception&) {
+		throw;
+	}
 	_posts.push_back(post);
 }
 
@@ -94,13 +127,16 @@ void User::receiveMessage(Message* message)
 	_receivedMsgs.push_back(message);
 }
 
+/*
+* Sends a message to the another user which is friends with.
+* Does some checks before sending the message.
+* if the user exists, also if its friends with the user we want to send the message.
+* if we are friends we send otherwise we throw an exception
+*/
 void User::sendMessage(User* user, Message* message)
 {
 	if (user == NULL) {
 		throw std::invalid_argument("Your were trying to add someone that was remove or doesnt exist");
-	}
-	if (_us->getUserById(user->getId()) == NULL) {
-		throw std::invalid_argument("Your friend was removed from US - cant send a Message");
 	}
 	else if (isFriend(user)) {
 		user->receiveMessage(message);
@@ -111,6 +147,7 @@ void User::sendMessage(User* user, Message* message)
 
 }
 
+//prints all the received messages
 void User::viewReceivedMessages()
 {
 	if (_receivedMsgs.empty())
@@ -126,6 +163,7 @@ void User::viewReceivedMessages()
 	}
 }
 
+//prints all the friends post
 void User::viewFriendsPosts()
 {
 	if (_friends.empty()) {
@@ -133,10 +171,13 @@ void User::viewFriendsPosts()
 	}
 	else {
 		std::cout << _name << " is reading friends posts:" << std::endl;
-		for (auto friendUser : _friends) {
-			User* f = _us->getUserById(friendUser);
-			
-			for (auto post : f->getPosts()) {
+		for (auto friendUser : _friends)
+		{
+			//gets the User from USocial
+			User* f = _us->getUserById(friendUser);		
+
+			//iterates over the Post of the friend we found
+			for (auto post : f->getPosts()) {						
 				std::cout << f->getName() << "'s post:";
 				std::cout << *post << std::endl; 
 			}
@@ -145,6 +186,7 @@ void User::viewFriendsPosts()
 	}
 }
 
+//checks if the user is friends with another user
 bool User::isFriend(User* userFriend) {
 	for (auto i = _friends.begin(); i != _friends.end(); i++) {
 		if (*i == userFriend->getId()) {
@@ -156,11 +198,12 @@ bool User::isFriend(User* userFriend) {
 
 
 User::~User() {
+	//deep destructor
 	for (auto post : _posts) {
 		delete post;
 	}
 	_posts.clear();
-
+	//deep destructor
 	for (auto message : _receivedMsgs) {
 		delete message;
 	}

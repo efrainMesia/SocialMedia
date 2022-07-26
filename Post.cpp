@@ -17,7 +17,10 @@ void Post::post(string text)
 	}
 }
 
-//Post new post with text and media
+/*
+* Posts new post with text and media, if the media is sent as NULL
+* an exception will be throwed
+*/
 void Post::post(string text, Media* media)
 {
 	_text = text;
